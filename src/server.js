@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import app from './app.js';
 import http from 'http'
 import { Server } from 'socket.io';
+import roomHandler from './Handlers/roomHandler.js';
 
 
 dotenv.config({path:"./.env"})
@@ -18,10 +19,11 @@ const io = new Server(server,{
         methods:["GET","POST"]
     }
 })
-
+let idx=1;
 io.on("connection",(socket)=>{
-    console.log(`New use connected`);
-
+    idx++;
+    console.log(`New user connected ${idx}`);
+    roomHandler(socket)
     socket.on("disconnect",()=>{
         console.log("User disconnected");
     })
